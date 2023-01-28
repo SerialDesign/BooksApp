@@ -1,9 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import useCachedResources from "./hooks/useCachedResources";
+import useColorScheme from "./hooks/useColorScheme";
+import Navigation from "./navigation";
+
+const API_KEY =
+  "ipatinga::stepzen.net+1000::a82f69ca2c5c40f708b9c2e266c5c652404506979229c5d61c62040722a78e26";
+
+const client = new ApolloClient({
+  uri: "https://ipatinga.stepzen.net/api/pouring-scorpion/__graphql",
+  headers: {
+    Authorization: `Apikey ${API_KEY}`,
+  },
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -14,7 +26,9 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
+        <ApolloProvider client={client}>
+          <Navigation colorScheme={colorScheme} />
+        </ApolloProvider>
         <StatusBar />
       </SafeAreaProvider>
     );
