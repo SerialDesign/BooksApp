@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // properly typescript rules
 type MyBooksContextType = {
@@ -23,6 +30,17 @@ type Props = {
 
 const MyBooksProvider = ({ children }: Props) => {
   const [savedBooks, setSavedBooks] = useState<Book[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    loadData();
+  }, []); //load the data when the component mounts, dependecy = empty array (+ check again 245)
+
+  useEffect(() => {
+    if (loaded) {
+      persistData();
+    }
+  }, [savedBooks]);
 
   const areBooksTheSame = (a: Book, b: Book) => {
     return JSON.stringify(a) === JSON.stringify(b);
@@ -40,6 +58,24 @@ const MyBooksProvider = ({ children }: Props) => {
   //   const addBook = (book: Book) => {
   //     setSavedBooks((books) => [book, ...books]);
   //   };
+
+  const persistData = async () => {
+    //write data to the local storage
+    await AsyncStorage.setItem("booksData", JSON.stringify(savedBooks)); // first Param: key = booksData, 2 param: string = savedBooks stringified
+  };
+
+  const loadData = async () => {
+    //read data to the local storage
+    const dataString = await AsyncStorage.getItem("booksData"); // only 1 Param: key that we want to read
+
+    if (dataString) {
+      // when you first open the app, there is nothing in the dataString
+      const items = JSON.parse(dataString); // - we have to transform from a string to an array - oposite of stringify
+      setSavedBooks(items);
+    }
+
+    setLoaded(true); // makes sure that the data gets loaded first and then persistData is called, otherwise the persist func might override the booksData with an empty array
+  };
 
   const onToggleSave = (book: Book) => {
     if (isBookSaved(book)) {
