@@ -46,7 +46,7 @@ const query = gql`
   }
 `;
 
-export default function TabOneScreen() {
+export default function SearchScreen() {
   const [search, setSearch] = useState("");
   // Typescript.. generic Type, defined that only "googleBooksSearch" or "openLibrarySearch" is allowed, not something random..
   const [provider, setProvider] = useState<

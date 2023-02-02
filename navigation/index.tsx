@@ -18,8 +18,8 @@ import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import SearchScreen from "../screens/SearchScreen";
+import MyBooksScreen from "../screens/MyBooksScreen";
 import {
   RootStackParamList,
   RootTabParamList,
@@ -79,16 +79,17 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="My Books"
+      initialRouteName="Search" // decide which Screen should be shown first "Search" or "My Books"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
         name="Search"
-        component={TabOneScreen}
+        component={SearchScreen}
         options={{
           title: "Search Books",
+          //headerShown: false, //check 258
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
           // headerRight: () => (
           //   <Pressable
@@ -109,9 +110,9 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="My Books"
-        component={TabTwoScreen}
+        component={MyBooksScreen}
         options={{
-          title: "Tab Two",
+          title: "My Books",
           tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
         }}
       />

@@ -6,7 +6,7 @@ import { Text, View } from "../components/Themed";
 
 import { useMyBooks } from "../context/MyBooksProvider";
 
-export default function TabTwoScreen() {
+export default function MyBooksScreen() {
   // const { test } = useMyBooks(); // custom context hook instead of useContext
   // console.log(test);
   const { savedBooks } = useMyBooks();
