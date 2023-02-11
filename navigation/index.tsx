@@ -100,7 +100,7 @@ function BottomTabNavigator() {
           //   >
           //     <FontAwesome
           //       name="info-circle"
-          //       size={25}
+          //       size={25}React
           //       color={Colors[colorScheme].text}
           //       style={{ marginRight: 15 }}
           //     />
